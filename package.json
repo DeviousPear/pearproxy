@@ -1,0 +1,8 @@
+{
+    "dependencies": {
+        "node-fetch": "latest"
+    },
+    "scripts": {
+        "start": "node app.js"
+    }
+}
