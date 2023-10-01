@@ -24,4 +24,4 @@ var proxy = require("http").createServer((req, res) => {
         console.log(req.headers, req.url)
         res.end("Use /proxyto:{your url} to go to a website with PearProxy")
     }
-}).listen(5000)
+}).listen(3000)
