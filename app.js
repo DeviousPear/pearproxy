@@ -16,10 +16,10 @@ var proxy = require("http").createServer((req, res) => {
     } else if (req.headers.cookie && req.headers.cookie.match(/pearproxy=http/)) {
         console.log("proxy on")
         console.log(req.url)
-        let url = new URL(req.headers.cookie.split("; ").find(item => item.includes("pearproxy")).split("=")[1])
+        let url = new URL(require("cookie").parse(req.headers.cookie).pearproxy)
         res.setHeader("Content-Type", "text/html")
         fetch(url.origin + req.url).then(resp => resp.text()).then(resp => res.end(data)).catch(res.end)
-        
+
     } else {
         console.log("wtf")
         console.log(req.headers, req.url)
