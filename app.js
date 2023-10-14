@@ -15,10 +15,14 @@ var proxy = require("http").createServer((req, res) => {
         res.setHeader("Content-Type", "application/json")
         res.end(JSON.stringify(req.headers))
     } else if (req.headers.cookie && req.headers.cookie.match(/pearproxy=http/)) {
+        let fakeHeaders = {}
         console.log("proxy on")
         console.log(req.url)
         let url = new URL(require("cookie").parse(req.headers.cookie).pearproxy)
-        require(url.protocol.split(":")[0]).get(url.origin + req.url, (resp => {
+        if (url.hostname == "games.poki.com") {
+            fakeHeaders["Sec-Fetch-Dest"] = "iframe"
+        }
+        require(url.protocol.split(":")[0]).get(url.origin + req.url, {headers: fakeHeaders}, (resp => {
             resp.pipe(res)
         }))
         //then(resp => resp.text()).then(resp => res.end(data)).catch(res.end)
