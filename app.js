@@ -21,6 +21,7 @@ var proxy = require("http").createServer((req, res) => {
         let url = new URL(require("cookie").parse(req.headers.cookie).pearproxy)
         if (url.hostname == "games.poki.com") {
             fakeHeaders["Sec-Fetch-Dest"] = "iframe"
+            fakeHeaders["Referer"] = url.origin + req.url
         }
         require(url.protocol.split(":")[0]).get(url.origin + req.url, {headers: fakeHeaders}, (resp => {
             resp.pipe(res)
