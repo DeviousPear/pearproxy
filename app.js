@@ -11,6 +11,9 @@ var proxy = require("http").createServer((req, res) => {
         res.statusCode = 303
         res.setHeader("Location", stuff.pathname + stuff.search)
         res.end("Opening " + stuff.toString())
+    } else if (req.url == "/CHECKHEADERS") {
+        res.setHeader("Content-Type", "application/json")
+        res.end(JSON.stringify(req.headers))
     } else if (req.headers.cookie && req.headers.cookie.match(/pearproxy=http/)) {
         console.log("proxy on")
         console.log(req.url)
