@@ -7,19 +7,19 @@ var proxy = require("http").createServer((req, res) => {
         console.log("proxy init")
         
         let stuff = new URL(req.url.split("proxyto:")[1])
-        console.log(stuff.toString())
         res.setHeader("Set-Cookie", "pearproxy=" + stuff.origin + ";Path=/")
         res.statusCode = 303
-        console.log(stuff)
         res.setHeader("Location", stuff.pathname + stuff.search)
         res.end("Opening " + stuff.toString())
     } else if (req.headers.cookie && req.headers.cookie.match(/pearproxy=http/)) {
-        res.end("ok man here u go: \n " + JSON.stringify(req.headers) + "\n" + JSON.stringify(require("cookie").parse(req.headers.cookie)))
         console.log("proxy on")
         console.log(req.url)
         let url = new URL(require("cookie").parse(req.headers.cookie).pearproxy)
         res.setHeader("Content-Type", "text/html")
-        fetch(url.origin + req.url).then(resp => resp.text()).then(resp => res.end(data)).catch(res.end)
+        require(url.protocol.split(":")[0]).get(url.origin + req.url, (resp => {
+            resp.pipe(res)
+        }))
+        //then(resp => resp.text()).then(resp => res.end(data)).catch(res.end)
 
     } else {
         console.log("wtf")
