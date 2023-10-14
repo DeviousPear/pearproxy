@@ -20,8 +20,11 @@ var proxy = require("http").createServer((req, res) => {
         console.log(req.url)
         let url = new URL(require("cookie").parse(req.headers.cookie).pearproxy)
         if (url.hostname == "games.poki.com") {
-            fakeHeaders["Sec-Fetch-Dest"] = "iframe"
-            fakeHeaders["Referer"] = url.origin + req.url
+            fakeHeaders = req.headers
+            delete fakeHeaders["X-Real-IP"]
+            delete fakeHeaders["X-Forwarded-For"]
+
+            console.log("poki games url")
         }
         require(url.protocol.split(":")[0]).get(url.origin + req.url, {headers: fakeHeaders}, (resp => {
             resp.pipe(res)
@@ -29,6 +32,11 @@ var proxy = require("http").createServer((req, res) => {
         //then(resp => resp.text()).then(resp => res.end(data)).catch(res.end)
 
     } else {
+        if (req.headers.referer.includes("games.poki")) {
+            console.log("dubl wtf")
+
+        }
+        console.log(req.url)
         console.log("wtf")
         res.end("Use /proxyto:{your url} to go to a website with PearProxy")
     }
