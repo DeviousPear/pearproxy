@@ -15,7 +15,7 @@ var proxy = require("http").createServer((req, res) => {
         console.log("proxy on")
         console.log(req.url)
         let url = new URL(require("cookie").parse(req.headers.cookie).pearproxy)
-        require(url.protocol.split(":")[0], {}).get(url.origin + req.url, (resp => {
+        require(url.protocol.split(":")[0]).get(url.origin + req.url, (resp => {
             resp.pipe(res)
         }))
         //then(resp => resp.text()).then(resp => res.end(data)).catch(res.end)
