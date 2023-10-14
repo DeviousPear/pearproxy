@@ -15,15 +15,13 @@ var proxy = require("http").createServer((req, res) => {
         console.log("proxy on")
         console.log(req.url)
         let url = new URL(require("cookie").parse(req.headers.cookie).pearproxy)
-        res.setHeader("Content-Type", "text/html")
-        require(url.protocol.split(":")[0]).get(url.origin + req.url, (resp => {
+        require(url.protocol.split(":")[0], {}).get(url.origin + req.url, (resp => {
             resp.pipe(res)
         }))
         //then(resp => resp.text()).then(resp => res.end(data)).catch(res.end)
 
     } else {
         console.log("wtf")
-        console.log(req.headers, req.url)
         res.end("Use /proxyto:{your url} to go to a website with PearProxy")
     }
 }).listen(3000)
