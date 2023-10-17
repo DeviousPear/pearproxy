@@ -16,7 +16,7 @@ var proxy = require("http").createServer((req, res) => {
         res.end(JSON.stringify(req.headers))
     } else if (req.headers.cookie && req.headers.cookie.match(/pearproxy=http/)) {
         let fakeHeaders = {}
-        fakeHeaders["User-Agent"] = req.headers["User-Agent"]
+        fakeHeaders["User-Agent"] = req.headers["user-agent"]
         console.log("proxy on")
         console.log(req.url)
         let url = new URL(require("cookie").parse(req.headers.cookie).pearproxy)
