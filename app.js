@@ -23,14 +23,12 @@ var proxy = require("http").createServer((req, res) => {
             fakeHeaders = req.headers
             delete fakeHeaders["X-Real-IP"]
             delete fakeHeaders["X-Forwarded-For"]
-
             console.log("poki games url")
         }
         require(url.protocol.split(":")[0]).get(url.origin + req.url, {headers: fakeHeaders}, (resp => {
             resp.pipe(res)
+        res.write(`<script>const ORIGIN_REQUEST="${url.origin}";setTimeout(()=>{Array.from(document.querySelectorAll("a, link")).forEach(r=>{r.href.startsWith("https://pearproxy.vercel.app")||(r.href="https://pearproxy.vercel.app/proxyto:"+r.href)}),Array.from(document.querySelectorAll("img, iframe, audio, source, video")).forEach(r=>{r.src.startsWith("https://pearproxy.vercel.app")||(r.src="https://pearproxy.vercel.app/proxyto:"+r.href)}),fetch("https://pearproxy.vercel.app/proxyto:request").then(r=>{r.ok||(location.href="data:text/html,an error occured with pearproxy")})},500);</script>`)
         }))
-        //then(resp => resp.text()).then(resp => res.end(data)).catch(res.end)
-
     } else {
         if (req.headers.referer.includes("games.poki")) {
             console.log("dubl wtf")
