@@ -10,10 +10,5 @@ setTimeout(() => {
             i.src = "https://pearproxy.vercel.app/proxyto:" + i.href 
         }
     })
-    fetch("https://pearproxy.vercel.app/proxyto:" + ORIGIN_REQUEST).then((res) => {
-        if (!res.ok) {
-            location.href = "data:text/html,an error occured with pearproxy"
-        }
-    })
 
 }, 500)
