@@ -28,7 +28,7 @@ var proxy = require("http").createServer((req, res) => {
         }
         require(url.protocol.split(":")[0]).get(url.origin + req.url, {headers: fakeHeaders}, (resp => {
             resp.pipe(res)
-        res.write(`<script>const ORIGIN_REQUEST="${url.origin}";setTimeout(()=>{Array.from(document.querySelectorAll("a, link")).forEach(r=>{r.href.startsWith("https://pearproxy.vercel.app")||(r.href="https://pearproxy.vercel.app/proxyto:"+r.href)}),Array.from(document.querySelectorAll("img, iframe, audio, source, video, script")).forEach(r=>{r.src.startsWith("https://pearproxy.vercel.app")||(r.src="https://pearproxy.vercel.app/proxyto:"+r.href)})},500);</script>`)
+        res.write(`<script>const ORIGIN_REQUEST="${url.origin}";setTimeout(()=>{Array.from(document.querySelectorAll("a, link")).forEach(r=>{r.href.startsWith("https://pearproxy.vercel.app")||(r.href="https://pearproxy.vercel.app/proxyto:"+r.href)}),Array.from(document.querySelectorAll("img, iframe, audio, source, video, script")).forEach(r=>{!r.src.startsWith("https://pearproxy.vercel.app")||(r.src="https://pearproxy.vercel.app/proxyto:"+r.href)})},500);</script>`)
         }))
     } else {
         if (req.headers.referer.includes("games.poki")) {
