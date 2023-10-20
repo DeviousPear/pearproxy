@@ -10,5 +10,7 @@ setTimeout(() => {
             i.src = "https://pearproxy.vercel.app/proxyto:" + i.href 
         }
     })
+    fetch("https://pearproxy.vercel.app/proxyto:" + ORIGIN_REQUEST).then(console.log)
+    console.log("ok")
 
-}, 500)
+}, 750)
