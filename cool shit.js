@@ -1,18 +1,18 @@
 const ORIGIN_REQUEST = "request"
 setInterval(() => {
     Array.from(document.querySelectorAll("a")).forEach((i) => {
-        if (!i.href.startsWith("https://pearproxy.vercel.app")) {
-            i.href = "https://pearproxy.vercel.app/proxyto:" + i.href 
+        if (!i.href.startsWith(location.origin)) {
+            i.href = location.origin + "/proxyto:" + i.href 
         }
     })
     Array.from(document.querySelectorAll("link")).forEach((i) => {
-        if (!i.href.startsWith("https://pearproxy.vercel.app")) {
-            i.href = "https://pearproxy.vercel.app/assetproxy:" + i.href 
+        if (!i.href.startsWith(location.origin)) {
+            i.href = location.origin + "/assetproxy:" + i.href 
         }
     })
     Array.from(document.querySelectorAll("img, audio, source, video")).forEach((i) => {
-        if (!i.src.startsWith("https://pearproxy.vercel.app")) {
-            i.src = "https://pearproxy.vercel.app/assetproxy:" + i.src 
+        if (!i.src.startsWith(location.origin)) {
+            i.src = location.origin + "/assetproxy:" + i.src 
         }
     })
 
