@@ -13,8 +13,9 @@ var proxy = require("http").createServer((req, res) => {
         res.end("Opening " + stuff.toString())
     } else if (req.url.startsWith("/assetproxy:")) {
         let url = new URL(req.url.split("assetproxy:")[1])
-        require(url.protocol.split(":")[0]).get(url.origin + req.url, {headers: fakeHeaders}, (resp => {
+        require(url.protocol.split(":")[0]).get(url.origin + req.url, {headers: fakeHeaders}, resp => {
             resp.pipe(res)
+        })
     } else if (req.url == "/CHECKHEADERS") {
         res.setHeader("Content-Type", "application/json")
         res.end(JSON.stringify(req.headers))
