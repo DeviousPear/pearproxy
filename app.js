@@ -11,8 +11,8 @@ var proxy = require("http").createServer((req, res) => {
         res.statusCode = 303
         res.setHeader("Location", stuff.pathname + stuff.search)
         res.end("Opening " + stuff.toString())
-    } else if (req.url.startsWith("/assetproxy:")) {
-        let url = new URL(req.url.split("assetproxy:")[1])
+    } else if (req.url.startsWith("/asset:")) {
+        let url = new URL(req.url.split("asset:")[1])
         require(url.protocol.split(":")[0]).get(url.origin + req.url, {headers: fakeHeaders}, resp => {
             resp.pipe(res)
         })
@@ -33,7 +33,7 @@ var proxy = require("http").createServer((req, res) => {
         }
         require(url.protocol.split(":")[0]).get(url.origin + req.url, {headers: fakeHeaders}, (resp => {
             resp.pipe(res)
-        res.write(`<script>const ORIGIN_REQUEST="request";setInterval(()=>{Array.from(document.querySelectorAll("a")).forEach(r=>{r.href.startsWith(location.origin)||(r.href=location.origin+"/to:"+r.href)}),Array.from(document.querySelectorAll("link")).forEach(r=>{r.href.startsWith(location.origin)||(r.href=location.origin+"/assetproxy:"+r.href)}),Array.from(document.querySelectorAll("img, audio, source, video")).forEach(r=>{r.src.startsWith(location.origin)||(r.src=location.origin+"/assetproxy:"+r.src)})},750);</script>`)
+        res.write(`<script>const ORIGIN_REQUEST="request";setInterval(()=>{Array.from(document.querySelectorAll("a")).forEach(r=>{r.href.startsWith(location.origin)||(r.href=location.origin+"/to:"+r.href)}),Array.from(document.querySelectorAll("link")).forEach(r=>{r.href.startsWith(location.origin)||(r.href=location.origin+"/asset:"+r.href)}),Array.from(document.querySelectorAll("img, audio, source, video, iframe")).forEach(r=>{r.src.startsWith(location.origin)||(r.src=location.origin+"/asset:"+r.src)})},750);</script>`)
         }))
     } else {
         if (req.headers.referer.includes("games.poki")) {
