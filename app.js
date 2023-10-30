@@ -3,10 +3,10 @@ import("node-fetch").then(res => {
     fetch = res.default
 })
 var proxy = require("http").createServer((req, res) => {
-    if (req.url.startsWith("/proxyto:")) {
+    if (req.url.startsWith("/to:")) {
         console.log("proxy init")
         
-        let stuff = new URL(req.url.split("proxyto:")[1])
+        let stuff = new URL(req.url.split("to:")[1])
         res.setHeader("Set-Cookie", "pearproxy=" + stuff.origin + ";Path=/")
         res.statusCode = 303
         res.setHeader("Location", stuff.pathname + stuff.search)
@@ -33,7 +33,7 @@ var proxy = require("http").createServer((req, res) => {
         }
         require(url.protocol.split(":")[0]).get(url.origin + req.url, {headers: fakeHeaders}, (resp => {
             resp.pipe(res)
-        res.write(`<script>const ORIGIN_REQUEST="request";setInterval(()=>{Array.from(document.querySelectorAll("a")).forEach(r=>{r.href.startsWith(location.origin)||(r.href=location.origin+"/proxyto:"+r.href)}),Array.from(document.querySelectorAll("link")).forEach(r=>{r.href.startsWith(location.origin)||(r.href=location.origin+"/assetproxy:"+r.href)}),Array.from(document.querySelectorAll("img, audio, source, video")).forEach(r=>{r.src.startsWith(location.origin)||(r.src=location.origin+"/assetproxy:"+r.src)})},750);</script>`)
+        res.write(`<script>const ORIGIN_REQUEST="request";setInterval(()=>{Array.from(document.querySelectorAll("a")).forEach(r=>{r.href.startsWith(location.origin)||(r.href=location.origin+"/to:"+r.href)}),Array.from(document.querySelectorAll("link")).forEach(r=>{r.href.startsWith(location.origin)||(r.href=location.origin+"/assetproxy:"+r.href)}),Array.from(document.querySelectorAll("img, audio, source, video")).forEach(r=>{r.src.startsWith(location.origin)||(r.src=location.origin+"/assetproxy:"+r.src)})},750);</script>`)
         }))
     } else {
         if (req.headers.referer.includes("games.poki")) {
@@ -42,6 +42,6 @@ var proxy = require("http").createServer((req, res) => {
         }
         console.log(req.url)
         console.log("wtf")
-        res.end("Use /proxyto:{your url} to go to a website with PearProxy")
+        res.end("Use /to:{your url} to go to a website with PearProxy")
     }
 }).listen(3000)
