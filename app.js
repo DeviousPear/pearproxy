@@ -1,7 +1,3 @@
-var fetch;
-import("node-fetch").then(res => {
-    fetch = res.default
-})
 var proxy = require("http").createServer((req, res) => {
     if (req.url.startsWith("/to:")) {
         console.log("proxy init")
