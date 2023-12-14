@@ -1,18 +1,19 @@
 const ORIGIN_REQUEST = "request"
 setInterval(() => {
+    
+    Array.from(document.querySelectorAll("[href]")).forEach((i) => {
+        if (!i.href.startsWith(location.origin) && i.nodeName != "a") {
+            i.href = location.origin + "/asset:" + i.href 
+        }
+    })
     Array.from(document.querySelectorAll("a")).forEach((i) => {
         if (!i.href.startsWith(location.origin)) {
             i.href = location.origin + "/proxyto:" + i.href 
         }
     })
-    Array.from(document.querySelectorAll("link")).forEach((i) => {
-        if (!i.href.startsWith(location.origin)) {
-            i.href = location.origin + "/assetproxy:" + i.href 
-        }
-    })
-    Array.from(document.querySelectorAll("img, audio, source, video")).forEach((i) => {
+    Array.from(document.querySelectorAll("[src]")).forEach((i) => {
         if (!i.src.startsWith(location.origin)) {
-            i.src = location.origin + "/assetproxy:" + i.src 
+            i.src = location.origin + "/asset:" + i.src 
         }
     })
 
