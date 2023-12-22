@@ -1,6 +1,4 @@
-const ORIGIN_REQUEST = "request"
 setInterval(() => {
-    
     Array.from(document.querySelectorAll("[href]")).forEach((i) => {
         if (!i.href.startsWith(location.origin) && i.nodeName != "a") {
             i.href = location.origin + "/asset:" + i.href 
