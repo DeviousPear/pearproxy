@@ -1,18 +1,12 @@
+const ORIGIN_REQUEST = "request";
 setInterval(() => {
-    Array.from(document.querySelectorAll("[href]")).forEach((i) => {
-        if (!i.href.startsWith(location.origin) && i.nodeName != "a") {
-            i.href = location.origin + "/asset:" + i.href 
-        }
-    })
-    Array.from(document.querySelectorAll("a")).forEach((i) => {
-        if (!i.href.startsWith(location.origin)) {
-            i.href = location.origin + "/proxyto:" + i.href 
-        }
-    })
-    Array.from(document.querySelectorAll("[src]")).forEach((i) => {
-        if (!i.src.startsWith(location.origin)) {
-            i.src = location.origin + "/asset:" + i.src 
-        }
-    })
-
-}, 750)
+    Array.from(document.querySelectorAll("[href]")).forEach((r) => {
+        r.href.startsWith(location.origin) || "a" == r.nodeName || (r.href = location.origin + "/asset:" + r.href);
+    }),
+        Array.from(document.querySelectorAll("a")).forEach((r) => {
+            r.href.startsWith(location.origin) || (r.href = location.origin + "/proxyto:" + r.href);
+        }),
+        Array.from(document.querySelectorAll("[src]")).forEach((r) => {
+            r.src.startsWith(location.origin) || (r.src = location.origin + "/asset:" + r.src);
+        });
+}, 750);
