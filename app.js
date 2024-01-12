@@ -29,7 +29,7 @@ var proxy = require("http").createServer((req, res) => {
         }
         require(url.protocol.split(":")[0]).get(url.origin + req.url, {headers: fakeHeaders}, (resp => {
             resp.pipe(res)
-        res.write(`<script>setInterval(()=>{Array.from(document.querySelectorAll("a")).forEach(r=>{r.href.includes(location.origin)||(r.href=location.origin+"/to:"+r.href)}),Array.from(document.querySelectorAll("[href]")).forEach(r=>{r.href.includes(location.origin)||(r.href=location.origin+"/asset:"+r.href)}),Array.from(document.querySelectorAll("[src]")).forEach(r=>{r.src.includes(location.origin)||(r.src=location.origin+"/asset:"+r.src)})},750);</script>`)
+        res.write(`<script>setInterval(()=>{Array.from(document.querySelectorAll("a")).forEach(r=>{r.href.includes("pear")||(r.href=location.origin+"/to:"+r.href)}),Array.from(document.querySelectorAll("[href]")).forEach(r=>{r.href.includes("pear")||(r.href=location.origin+"/asset:"+r.href)}),Array.from(document.querySelectorAll("[src]")).forEach(r=>{r.src.includes("pear")||(r.src=location.origin+"/asset:"+r.src)})},750);</script>`)
         }))
     } else {
         if (req.headers.referer.includes("games.poki")) {
