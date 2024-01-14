@@ -8,7 +8,11 @@ var proxy = require("http").createServer((req, res) => {
         res.setHeader("Location", stuff.pathname + stuff.search)
         res.end("Opening " + stuff.toString())
     } else if (req.url.startsWith("/asset:")) {
-        let url = new URL(req.url.split("asset:")[1])
+        let fakeHeaders = {}
+        fakeHeaders["User-Agent"] = req.headers["user-agent"]
+        console.log("proxy on")
+        console.log(req.url)
+        let url = new URL(require("cookie").parse(req.headers.cookie).pearproxy)
         require(url.protocol.split(":")[0]).get(url.origin + req.url, {headers: fakeHeaders}, resp => {
             resp.pipe(res)
         })
@@ -21,21 +25,11 @@ var proxy = require("http").createServer((req, res) => {
         console.log("proxy on")
         console.log(req.url)
         let url = new URL(require("cookie").parse(req.headers.cookie).pearproxy)
-        if (url.hostname == "games.poki.com") {
-            fakeHeaders = req.headers
-            delete fakeHeaders["X-Real-IP"]
-            delete fakeHeaders["X-Forwarded-For"]
-            console.log("poki games url")
-        }
         require(url.protocol.split(":")[0]).get(url.origin + req.url, {headers: fakeHeaders}, (resp => {
             resp.pipe(res)
-        res.write(`<script>setInterval(()=>{Array.from(document.querySelectorAll("a")).forEach(r=>{r.href.includes("pear")||(r.href=location.origin+"/to:"+r.href)}),Array.from(document.querySelectorAll("[href]")).forEach(r=>{r.href.includes("pear")||(r.href=location.origin+"/asset:"+r.href)}),Array.from(document.querySelectorAll("[src]")).forEach(r=>{r.src.includes("pear")||(r.src=location.origin+"/asset:"+r.src)})},750);</script>`)
+        res.write(`<script>setInterval(()=>{Array.from(document.querySelectorAll("a")).forEach(r=>{console.log(r.getAttribute("href")),new URL(r.getAttribute("href")).origin!=location.origin&&(r.href=location.origin+"/to:"+r.href)}),Array.from(document.querySelectorAll("[href]")).forEach(r=>{console.log(r.getAttribute("href")),new URL(r.getAttribute("href")).origin!=location.origin&&(r.href=location.origin+"/asset:"+r.href)}),Array.from(document.querySelectorAll("[src]")).forEach(r=>{console.log(r.getAttribute("src")),new URL(r.getAttribute("src")).origin!=location.origin&&(r.src=location.origin+"/asset:"+r.src)})},750);</script>`)
         }))
     } else {
-        if (req.headers.referer.includes("games.poki")) {
-            console.log("dubl wtf")
-
-        }
         console.log(req.url)
         console.log("wtf")
         res.end("Use /to:{your url} to go to a website with PearProxy")
