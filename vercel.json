@@ -5,6 +5,7 @@
       { "src": "app.js", "use": "@vercel/node" }
    ],
    "routes": [
+      {"src": "/INJECTSCRIPT", "dest": "/coolshit.js", "continue": false},
       { "src": "/(.*)", "dest": "/app.js" }
    ]
 }

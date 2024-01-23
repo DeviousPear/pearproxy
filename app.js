@@ -27,7 +27,7 @@ var proxy = require("http").createServer((req, res) => {
         let url = new URL(require("cookie").parse(req.headers.cookie).pearproxy)
         require(url.protocol.split(":")[0]).get(url.origin + req.url, {headers: fakeHeaders}, (resp => {
             resp.pipe(res)
-        res.write(`<script>setInterval(()=>{Array.from(document.querySelectorAll("a")).forEach(r=>{console.log(r.getAttribute("href")),new URL(r.getAttribute("href")).origin!=location.origin&&(r.href=location.origin+"/to:"+r.href)}),Array.from(document.querySelectorAll("[href]")).forEach(r=>{console.log(r.getAttribute("href")),new URL(r.getAttribute("href")).origin!=location.origin&&(r.href=location.origin+"/asset:"+r.href)}),Array.from(document.querySelectorAll("[src]")).forEach(r=>{console.log(r.getAttribute("src")),new URL(r.getAttribute("src")).origin!=location.origin&&(r.src=location.origin+"/asset:"+r.src)})},750);</script>`)
+        res.write(`<script src="/INJECTSCRIPT"></script>`)
         }))
     } else {
         console.log(req.url)
