@@ -52,10 +52,11 @@ var proxy = require("http").createServer((req, res) => {
         fakeHeaders["Host"] = url.host
         require(url.protocol.split(":")[0]).get(url.origin + req.url, {headers: fakeHeaders}, (resp => {
             Object.entries(decodeRawHeaders(resp.rawHeaders)).forEach(([key, val]) => {
-                console.log(key, val)
+                
                 if (!key.toLowerCase().includes("content-security-policy")) {
                     res.setHeader(key, val)
-                }
+                    console.log(key, val)
+                } else console.log("blocked", key, val)
                 
             })
             resp.pipe(res)
