@@ -44,10 +44,9 @@ var proxy = require("http").createServer((req, res) => {
         res.end(JSON.stringify(decodeRawHeaders(req.rawHeaders)))
     } else if (req.headers.cookie && req.headers.cookie.match(/pearproxy=http/)) {
         let fakeHeaders = decodeRawHeaders(req.rawHeaders)
-        fakeHeaders["User-Agent"] = req.headers["user-agent"]
         delete fakeHeaders["Accept-Encoding"]
         console.log("proxy on")
-        console.log(req.url)
+        console.log(fakeHeaders)
         let url = new URL(require("cookie").parse(req.headers.cookie).pearproxy)
         fakeHeaders["Host"] = url.host
         require(url.protocol.split(":")[0]).get(url.origin + req.url, {headers: fakeHeaders}, (resp => {
@@ -60,6 +59,7 @@ var proxy = require("http").createServer((req, res) => {
                 
             })
             resp.pipe(res)
+            res.on("data", console.log)
             res.write(`<script src="/INJECTSCRIPT"></script>`)
         }))
     } else {
