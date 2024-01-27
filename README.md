@@ -1,5 +1,5 @@
 # pearproxy
-## A goguardian proxy that does not work
+## A cookie-based web proxy that does not work
 
 
 
