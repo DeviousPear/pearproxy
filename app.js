@@ -3,7 +3,7 @@ function decodeRawHeaders(raw) {
     let y = 1
     let obj = {}
     for (; x < raw.length;){
-        obj[raw[x]] = raw[y]
+        obj[raw[x].toLowerCase()] = raw[y]
         x += 2
         y += 2
     }
@@ -25,8 +25,8 @@ var proxy = require("http").createServer((req, res) => {
         console.log("proxy on")
         console.log(req.url)
         let url = new URL(require("cookie").parse(req.headers.cookie).pearproxy)
-        fakeHeaders["Host"] = url.host
-        delete fakeHeaders["Accept-Encoding"]
+        fakeHeaders["host"] = url.host
+        delete fakeHeaders["accept-encoding"]
         require(url.protocol.split(":")[0]).get(url.origin + req.url, {headers: fakeHeaders}, resp => {
             Object.entries(decodeRawHeaders(resp.rawHeaders)).forEach(([key, val]) => {
                 if (!key.toLowerCase().includes("content-security-policy")) {
@@ -44,11 +44,11 @@ var proxy = require("http").createServer((req, res) => {
         res.end(JSON.stringify(decodeRawHeaders(req.rawHeaders)))
     } else if (req.headers.cookie && req.headers.cookie.match(/pearproxy=http/)) {
         let fakeHeaders = decodeRawHeaders(req.rawHeaders)
-        delete fakeHeaders["Accept-Encoding"]
+        delete fakeHeaders["accept-encoding"]
         console.log("proxy on")
         let url = new URL(require("cookie").parse(req.headers.cookie).pearproxy)
-        fakeHeaders["Host"] = url.host
-        delete fakeHeaders["ETag"]
+        fakeHeaders["host"] = url.host
+        delete fakeHeaders["etag"]
         console.log(fakeHeaders)
         require(url.protocol.split(":")[0]).get(url.origin + req.url, {headers: fakeHeaders}, (resp => {
             Object.entries(decodeRawHeaders(resp.rawHeaders)).forEach(([key, val]) => {
