@@ -46,10 +46,10 @@ var proxy = require("http").createServer((req, res) => {
         let fakeHeaders = decodeRawHeaders(req.rawHeaders)
         delete fakeHeaders["Accept-Encoding"]
         console.log("proxy on")
-        console.log(fakeHeaders)
         let url = new URL(require("cookie").parse(req.headers.cookie).pearproxy)
         fakeHeaders["Host"] = url.host
         delete fakeHeaders["ETag"]
+        console.log(fakeHeaders)
         require(url.protocol.split(":")[0]).get(url.origin + req.url, {headers: fakeHeaders}, (resp => {
             Object.entries(decodeRawHeaders(resp.rawHeaders)).forEach(([key, val]) => {
                 
