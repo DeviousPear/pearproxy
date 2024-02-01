@@ -19,7 +19,11 @@ var proxy = require("http").createServer((req, res) => {
         res.statusCode = 303
         res.setHeader("Location", stuff.pathname + stuff.search)
         res.end("Opening " + stuff.toString())
-    } else if (req.url.startsWith("/INJECTSCRIPT")) require("fs").createReadStream(__dirname + "/coolshit.js").pipe(res)
+    } else if (req.url.startsWith("/UTIL")) {
+        res.setHeader("Content-Type", "text/html")
+        require("fs").createReadStream(__dirname + "/util.html").pipe(res)
+    }
+    else if (req.url.startsWith("/INJECTSCRIPT")) require("fs").createReadStream(__dirname + "/coolshit.js").pipe(res)
     else if (req.url.startsWith("/asset:")) {
         let fakeHeaders = decodeRawHeaders(req.rawHeaders)
         console.log("proxy on")
