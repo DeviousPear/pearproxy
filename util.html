@@ -1,0 +1,12 @@
+<input type="url" placeholder="url here">
+<button type="submit">Let's go</button>
+
+
+
+
+<script>
+document.querySelector("button").onclick = () => {
+    document.cookie = "pearproxy=" + document.querySelector("input").value
+    location.href = "/"
+}
+</script>
