@@ -1,12 +1,42 @@
-<input type="url" placeholder="url here">
-<button type="submit">Let's go</button>
+<html>
+<script src="https://cdn.tailwindcss.com/"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100..900&display=swap" rel="stylesheet">
+<script>
+    tailwind.config = {
+        theme: {
+            fontFamily: {
+                "sans": "Kumbh Sans"
+            }
+        }
+    }
+</script>
+<h1 class="text-center text-6xl font-bold mb-4 mt-48 font-sans">PearProxy</h1>
+<form>
+    <div class="flex items-center rounded-full p-4 w-6/12 mx-auto block focus:border-solid border-solid border-black border-2">
+        <input class="w-full h-4 focus:outline-none " type="url" placeholder="paste or type url here">
+        <button type="submit" class="bg-blue-500"><img class="w-8" src="https://images.rawpixel.com/image_png_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvdjEwMzAtMDQwLnBuZw.png"></button>
+    </div>
+    
+</form>
+<div class="flex justify-center">
+    <button class="p-2 bg-gray-200 rounded transition hover:bg-gray-300 m-2">How this works</button>
+    <a id="a"><button class="p-2 bg-gray-200 rounded transition hover:bg-gray-300 m-2" >Launch as DataURL</button></a>
+</div>
 
 
 
 
 <script>
-document.querySelector("button").onclick = () => {
+document.querySelector("form").onsubmit = (e) => {
+    if (location.href.includes("data:text/html")) {
+        location.href = "https://pearproxy.cyclic.cloud/to:" + document.querySelector("input").value
+    }
+    e.preventDefault()
     document.cookie = "pearproxy=" + document.querySelector("input").value
     location.href = "/"
 }
+document.getElementById("a").href = "data:text/html," + encodeURIComponent(document.querySelector("html").innerHTML)
 </script>
+</html>

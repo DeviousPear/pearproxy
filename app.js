@@ -23,7 +23,7 @@ var proxy = require("http").createServer((req, res) => {
         res.setHeader("Content-Type", "text/html")
         require("fs").createReadStream(__dirname + "/util.html").pipe(res)
     }
-    else if (req.url.startsWith("/INJECTSCRIPT")) require("fs").createReadStream(__dirname + "/coolshit.js").pipe(res)
+    else if (req.url.startsWith("/INJECTSCRIPT")) require("fs").createReadStream(__dirname + "/inject.js").pipe(res)
     else if (req.url.startsWith("/asset:")) {
         let fakeHeaders = decodeRawHeaders(req.rawHeaders)
         console.log("proxy on")

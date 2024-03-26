@@ -1,3 +1,4 @@
+
 console.log("Created by the DeviousPear")
 setInterval(() => {
     Array.from(document.querySelectorAll("a")).forEach((r) => {
